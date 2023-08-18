@@ -1,5 +1,6 @@
 package com.bulefire_fox.Test;
 
+import java.util.Date;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -77,8 +78,16 @@ public class WebSystem {
                 case "幸运数字":
                     luckyNumber();
                     break;
+                case "日期":
+                    time();
+                    break;
             }
         }
+    }
+
+    private static void time() {
+        Date d = new Date();
+        System.out.println(d);
     }
 
     public static boolean money(String name,String[] user,double[] money,int number){
