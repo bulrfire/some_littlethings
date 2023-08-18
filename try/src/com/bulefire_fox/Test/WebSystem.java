@@ -97,13 +97,13 @@ public class WebSystem {
                     time();
                     break;
                 case "挖矿":
-                    wk(GPUNumber,userGPU,number,name);
+                    wk(GPUNumber,userGPU,number,name,GPUUser);
                     break;
             }
         }
     }
 
-    private static void wk(int[] GPUNumber,String[] userGPU,int number,String name) {
+    private static void wk(int[] GPUNumber,String[] userGPU,int number,String name,String[] GPUUser) {
         String[] NvidiaGPU = {"690","960","1010","1020",
                 "1030","1040","1050","1060","1070","1080",
                 "1090","2010","2020","2030","2040",
@@ -115,11 +115,64 @@ public class WebSystem {
         String[] NvidiaGPUSuper = {"2050s","2060s","2070s",
                 "2080s","2090s","4060s","4070s","4080s","4090s"};
 
-        double[] NvidiaGPUAllW = {10,20,30,40,50,60,70,80,90,100,150,200};
+        double[] NvidiaGPUAllW = {100};
+
+        Scanner sc = new Scanner(System.in);
+        for (int i = 0; i < GPUUser.length; i++) {
+            if (name.equals(GPUUser[number])){
+                System.out.println("用户" + GPUUser[number]);
+                if (userGPU[number] == null){
+                    System.out.println("你还没有显卡");
+                    System.out.println("是(y)/(n)否购买");
+                    String choose = sc.next();
+                    switch (choose){
+                        case "y":
+                            System.out.println("正在前往购买显卡");
+                            GPUIn();
+                            break;
+                        case "n":
+                            System.out.println("以取消购买");
+                            return;
+                    }
+                    return;
+                }
+                System.out.println("拥有" + GPUNumber[number] + "张" + userGPU[number] + "显卡");
+                System.out.println("是(y)/否(n)开始");
+                if (sc.next().equals("y")) {
+                    startWk(userGPU[number],NvidiaGPUAllW[0]);
+                }
+                else if (sc.next().equals("n")){
+                    System.out.println("以退出矿场");
+                    return;
+                }
+            }
+            return;
+        }
+        System.out.println("用户不存在，是(y)/否(n)创建用户？");
+        String choose = sc.next();
+        switch (choose){
+            case "y":
+                GPUUser[number] = name;
+                GPUNumber[number] = 0;
+                userGPU[number] = null;
+                System.out.println("创建成功");
+                break;
+            case "n":
+                System.out.println("以取消创建");
+                return;
+        }
+    }
+
+    public static void GPUIn() {
 
     }
 
-    private static void time() {
+    public static void startWk(String userGPU,double NvidiaGPUAllW){
+        
+
+    }
+
+    public static void time() {
         Date d = new Date();
         System.out.println(d);
     }
@@ -166,6 +219,7 @@ public class WebSystem {
                 System.out.println("创建成功");
                 return true;
             case "no":
+                System.out.println("以取消创建");
                 return false;
         }
         return false;
