@@ -11,15 +11,23 @@ public class WebSystem {
         //密码
         String[] PassWorld = new String[100];
         String[] user = new String[100];
+
+        String[] userGPU = new String[100];
+        String[] GPUUser = new String[100];
+        int[] GPUNumber = new int[100];
+
         double[] money = new double[100];
         int number = 0;
         int userLoginNumber = 0;
         boolean[] luckNumber = new boolean[100];
-        choose(null,user,money,number,Username,PassWorld,userLoginNumber,luckNumber);
+        choose(null,user,money,number,Username,PassWorld,
+                userLoginNumber,luckNumber,GPUNumber,userGPU,GPUUser);
     }
 
     //登录
-    public static void login(String[] Username,String[] PassWorld,String[] user,double[] money,int number,int userLoginNumber,boolean[] luckyNumber){
+    public static void login(String[] Username,String[] PassWorld,String[] user,double[] money,
+                             int number,int userLoginNumber,boolean[] luckyNumber,
+                             int[] GPUNumber,String[] userGPU,String[] GPUUser){
         Scanner sc = new Scanner(System.in);
         System.out.println("用户名");
         String UserName = sc.next();
@@ -29,7 +37,8 @@ public class WebSystem {
             if(UserName.equals(Username[i])){
                 if(passWorld.equals(PassWorld[i])){
                     System.out.println("欢迎 " + Username[i]);
-                    choose(Username[i],user,money,number,Username,PassWorld,userLoginNumber,luckyNumber);
+                    choose(Username[i],user,money,number,Username,PassWorld,
+                            userLoginNumber,luckyNumber,GPUNumber,userGPU,GPUUser);
                 }
                 else{
                     System.out.println("密码或用户名错误");
@@ -40,7 +49,9 @@ public class WebSystem {
         System.out.println("密码或用户名错误");
     }
 
-    public static void login(String[] Username,String[] PassWorld,String[] user,double[] money,int number,int userLoginNumber,boolean[] luckNumber,int a){
+    public static void login(String[] Username,String[] PassWorld,String[] user,
+                             double[] money,int number,int userLoginNumber,boolean[] luckNumber,
+                             int[] GPUNumber,String[] userGPU,String[] GPUUser,int a){
         Scanner sc = new Scanner(System.in);
         System.out.println("用户名");
         String UserName = sc.next();
@@ -50,20 +61,24 @@ public class WebSystem {
         PassWorld[userLoginNumber] = passWorld;
         System.out.println("录入成功");
         System.out.println("请再次登录");
-        login(Username,PassWorld,user, money,number,userLoginNumber,luckNumber);
+        login(Username,PassWorld,user, money,number,userLoginNumber,luckNumber,GPUNumber,userGPU,GPUUser);
     }
 
-    public static void choose(String name,String[] user,double[] money,int number,String[] Username,String[] PassWorld,int userLoginNumber,boolean[] luckNumber){
+    public static void choose(String name,String[] user,double[] money,int number,String[] Username,
+                              String[] PassWorld,int userLoginNumber,boolean[] luckNumber,
+                              int[] GPUNumber,String[] userGPU,String[] GPUUser){
         Scanner sc = new Scanner(System.in);
         while (true) {
             System.out.println("操作");
             String choose = sc.next();
             switch (choose){
                 case "登录":
-                    login(Username,PassWorld,user, money,number,userLoginNumber,luckNumber);
+                    login(Username,PassWorld,user, money,number,
+                            userLoginNumber,luckNumber,GPUNumber,userGPU,GPUUser);
                     break;
                 case "注册":
-                    login(Username,PassWorld,user, money,number,userLoginNumber,luckNumber,0);
+                    login(Username,PassWorld,user, money,number,
+                            userLoginNumber,luckNumber,GPUNumber,userGPU,GPUUser,0);
                     break;
                 case "退出登录":
                     System.out.println("已退出登录");
@@ -81,8 +96,27 @@ public class WebSystem {
                 case "日期":
                     time();
                     break;
+                case "挖矿":
+                    wk(GPUNumber,userGPU,number,name);
+                    break;
             }
         }
+    }
+
+    private static void wk(int[] GPUNumber,String[] userGPU,int number,String name) {
+        String[] NvidiaGPU = {"690","960","1010","1020",
+                "1030","1040","1050","1060","1070","1080",
+                "1090","2010","2020","2030","2040",
+                "2050","2060","2070","2080","2090","3010",
+                "3020","3030","3040","3050","3060","3070",
+                "3080","3090","4010","4020","4030","4040",
+                "4050","4060","4070","4080","4090"};
+
+        String[] NvidiaGPUSuper = {"2050s","2060s","2070s",
+                "2080s","2090s","4060s","4070s","4080s","4090s"};
+
+        double[] NvidiaGPUAllW = {10,20,30,40,50,60,70,80,90,100,150,200};
+
     }
 
     private static void time() {
