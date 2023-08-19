@@ -1,8 +1,12 @@
 package com.bulefire_fox.Test;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 import java.util.Date;
 import java.util.Random;
 import java.util.Scanner;
+import java.util.concurrent.TimeUnit;
 
 public class WebSystem {
     public static void main(String[] args) {
@@ -104,16 +108,15 @@ public class WebSystem {
     }
 
     private static void wk(int[] GPUNumber,String[] userGPU,int number,String name,String[] GPUUser) {
-        String[] NvidiaGPU = {"690","960","1010","1020",
-                "1030","1040","1050","1060","1070","1080",
-                "1090","2010","2020","2030","2040",
-                "2050","2060","2070","2080","2090","3010",
-                "3020","3030","3040","3050","3060","3070",
-                "3080","3090","4010","4020","4030","4040",
-                "4050","4060","4070","4080","4090"};
+        String[] NvidiaGPU = {"690"};
+        double[] NvidiaGPUComputingPower = {100};
+        int a = 0;
 
         String[] NvidiaGPUSuper = {"2050s","2060s","2070s",
                 "2080s","2090s","4060s","4070s","4080s","4090s"};
+
+        double[] computingPower = {10
+        };
 
         double[] NvidiaGPUAllW = {100};
 
@@ -139,7 +142,7 @@ public class WebSystem {
                 System.out.println("拥有" + GPUNumber[number] + "张" + userGPU[number] + "显卡");
                 System.out.println("是(y)/否(n)开始");
                 if (sc.next().equals("y")) {
-                    startWk(userGPU[number],NvidiaGPUAllW[0]);
+                    startWk(userGPU[number],NvidiaGPUAllW[a],NvidiaGPUComputingPower[a]);
                 }
                 else if (sc.next().equals("n")){
                     System.out.println("以退出矿场");
@@ -167,8 +170,71 @@ public class WebSystem {
 
     }
 
-    public static void startWk(String userGPU,double NvidiaGPUAllW){
+    public static void startWk(String userGPU,double NvidiaGPUAllW,double computingPower){
+        double sumW = 0;
+        double perWMoney = 0.5;
+        double moneySumW = 0;
 
+        double money = 0;
+
+        long seconds = 0;
+        while (true) {
+            try {
+                Thread.sleep(1000);
+            } catch (Exception ignored) {
+            }
+
+            seconds += 1;
+            System.out.println("挖矿时间" + TimeConvert(seconds));
+
+            sumW += 0.01;
+            moneySumW = sumW * perWMoney;
+            money -= moneySumW;
+            System.out.println("收益:" + money);
+
+            String hash = Hash();
+        }
+    }
+
+    public static String TimeConvert(long seconds) {
+        long hours = TimeUnit.SECONDS.toHours(seconds);
+        long minutes = TimeUnit.SECONDS.toMinutes(seconds - TimeUnit.HOURS.toSeconds(hours));
+        long remainingSeconds = seconds - TimeUnit.HOURS.toSeconds(hours) - TimeUnit.MINUTES.toSeconds(minutes);
+        String ConvertTime = hours + "时" + minutes + "分" + remainingSeconds + "秒";
+        return ConvertTime;
+    }
+
+    public static String Hash(){
+        try {
+            // 创建 MessageDigest 对象，指定使用 SHA-256 算法
+            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+
+            // 创建 SecureRandom 对象
+            SecureRandom secureRandom = new SecureRandom();
+
+            // 生成随机数的字节数组
+            byte[] randomBytes = new byte[32];
+            secureRandom.nextBytes(randomBytes);
+
+            // 进行哈希计算
+            byte[] byteHash = digest.digest(randomBytes);
+
+            // 将字节数组转换为十六进制字符串
+            StringBuilder hexString = new StringBuilder();
+            for (byte b : byteHash) {
+                String hex = Integer.toHexString(0xff & b);
+                if (hex.length() == 1) {
+                    hexString.append('0');
+                }
+                hexString.append(hex);
+            }
+
+            String hash = hexString.toString();
+            return hash;
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     public static void time() {
