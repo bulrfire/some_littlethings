@@ -174,6 +174,8 @@ public class WebSystem {
         double sumW = 0;
         double perWMoney = 0.5;
         double moneySumW;
+        int perBiteMoney = 10;
+        int biteNumber = 0;
         int biteMoney = 0;
 
         double money = 0;
@@ -203,13 +205,18 @@ public class WebSystem {
             thread.setPriority(Thread.MAX_PRIORITY); // 设置线程的优先级为最高
             thread.start();
 
-
-
             String InHash = Hash();
+            if (InHash == null){
+                System.out.println("内核加载失败");
+                return;
+            }
             boolean ifWk = ifHash(hash,InHash);
             if (ifWk){
-                biteMoney += 1;
+                biteNumber += 1;
+                biteMoney += perBiteMoney;
+                money += perBiteMoney;
             }
+            System.out.println("比特币数量" + biteNumber);
         }
     }
 
