@@ -22,7 +22,7 @@ public class WebSystem {
 
         double[] money = new double[100];
         int number = 0;
-        int userLoginNumber = 0;
+        int userLoginNumber = -1;
         boolean[] luckNumber = new boolean[100];
         choose(null,user,money,number,Username,PassWorld,
                 userLoginNumber,luckNumber,GPUNumber,userGPU,GPUUser);
@@ -75,21 +75,25 @@ public class WebSystem {
         while (true) {
             System.out.println("操作");
             String choose = sc.next();
+            if (name == null){
+                switch (choose) {
+                    case "登录":
+                        login(Username, PassWorld, user, money, number,
+                                userLoginNumber, luckNumber, GPUNumber, userGPU, GPUUser);
+                        break;
+                    case "注册":
+                        login(Username, PassWorld, user, money, number,
+                                userLoginNumber, luckNumber, GPUNumber, userGPU, GPUUser, 0);
+                        break;
+                }
+                return;
+            }
             switch (choose){
-                case "登录":
-                    login(Username,PassWorld,user, money,number,
-                            userLoginNumber,luckNumber,GPUNumber,userGPU,GPUUser);
-                    break;
-                case "注册":
-                    login(Username,PassWorld,user, money,number,
-                            userLoginNumber,luckNumber,GPUNumber,userGPU,GPUUser,0);
-                    break;
                 case "退出登录":
                     System.out.println("已退出登录");
                     return;
                 case "查看钱包":
                     boolean go = money(name,user,money,number);
-                    number++;
                     if (go){
                         money(name,user,money,number);
                     }
@@ -101,22 +105,22 @@ public class WebSystem {
                     time();
                     break;
                 case "挖矿":
-                    wk(GPUNumber,userGPU,number,name,GPUUser);
+                    wk(GPUNumber,userGPU,number,name,GPUUser,money);
                     break;
             }
         }
     }
 
-    private static void wk(int[] GPUNumber,String[] userGPU,int number,String name,String[] GPUUser) {
+    private static void wk(int[] GPUNumber,String[] userGPU,int number,String name,String[] GPUUser,double[] money) {
         String[] NvidiaGPU = {"690"};
+        double[] NvidiaGPUMoney = {500};
         double[] NvidiaGPUComputingPower = {100};
         int a = 0;
 
         String[] NvidiaGPUSuper = {"2050s","2060s","2070s",
                 "2080s","2090s","4060s","4070s","4080s","4090s"};
 
-        double[] computingPower = {10
-        };
+        double[] computingPower = {10};
 
         double[] NvidiaGPUAllW = {100};
 
@@ -131,7 +135,8 @@ public class WebSystem {
                     switch (choose){
                         case "y":
                             System.out.println("正在前往购买显卡");
-                            GPUIn();
+                            number++;
+                            GPUIn(NvidiaGPU,NvidiaGPUMoney,money[number]);
                             break;
                         case "n":
                             System.out.println("以取消购买");
@@ -149,16 +154,17 @@ public class WebSystem {
                     return;
                 }
             }
-            return;
         }
         System.out.println("用户不存在，是(y)/否(n)创建用户？");
         String choose = sc.next();
         switch (choose){
             case "y":
+                number++;
                 GPUUser[number] = name;
                 GPUNumber[number] = 0;
                 userGPU[number] = null;
                 System.out.println("创建成功");
+                wk(GPUNumber,userGPU,number,name,GPUUser,money);
                 break;
             case "n":
                 System.out.println("以取消创建");
@@ -166,8 +172,44 @@ public class WebSystem {
         }
     }
 
-    public static void GPUIn() {
-
+    public static void GPUIn(String[] NvidiaGPU,double[] NvidiaGPUMoney,double money) {
+        System.out.println("目前正在出售的显卡有");
+        for (int i = 0; i < NvidiaGPU.length; i++) {
+            System.out.print(i == NvidiaGPU.length - 1 ? NvidiaGPU[i]:NvidiaGPU[i] + ", ");
+        }
+        System.out.println("选择你想要的型号");
+        Scanner sc = new Scanner(System.in);
+        String inGPU = sc.next();
+        for (int i = 0; i < NvidiaGPU.length; i++) {
+            if (inGPU.equals(NvidiaGPU[i])){
+                System.out.println("售价为"  + NvidiaGPUMoney[i]);
+                System.out.println("是(y)/否(n)购买");
+                String choose = sc.next();
+                switch (choose){
+                    case "y":
+                        if (money < NvidiaGPUMoney[i]){
+                            System.out.println("你的钱不够购买改显卡");
+                            System.out.println("你当前的余额为" + money);
+                            System.out.println("取消购买(y)或更换显卡型号(n)");
+                            String chooseInGPU = sc.next();
+                            switch (chooseInGPU){
+                                case "y":
+                                    System.out.println("以取消购买");
+                                    return;
+                                case "n":
+                                    GPUIn(NvidiaGPU,NvidiaGPUMoney,money);
+                                    break;
+                            }
+                        }
+                    case "n":
+                        System.out.println("以退出购买");
+                        return;
+                }
+            }
+            else{
+                return;
+            }
+        }
     }
 
     public static void startWk(String userGPU,double NvidiaGPUAllW,double computingPower){
@@ -273,10 +315,7 @@ public class WebSystem {
     }
 
     public static boolean ifHash(String hash,String InHash){
-        if (hash.equals(InHash)){
-            return true;
-        }
-        return false;
+        return hash.equals(InHash);
     }
 
     public static void time() {
@@ -302,11 +341,11 @@ public class WebSystem {
                 case "存钱":
                     for (int i = 0; i < user.length; i++) {
                         if(name.equals(user[i])){
-
                             moneyIn(name,money,i);
                             money(name,user,money,number);
                         }
                     }
+                    break;
                 case "取钱":
                     for (int i = 0; i < user.length; i++) {
                         if (name.equals(user[i])){
@@ -314,6 +353,9 @@ public class WebSystem {
                             money(name,user,money,number);
                         }
                     }
+                    break;
+                case "返回":
+                    return false;
             }
             return false;
         }
@@ -321,6 +363,7 @@ public class WebSystem {
         String typename = sc.next();
         switch (typename){
             case "yes":
+                number++;
                 user[number] = name;
                 money[number] = 0;
                 System.out.println("创建成功");
