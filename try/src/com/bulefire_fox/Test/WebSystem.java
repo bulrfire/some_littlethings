@@ -1,7 +1,5 @@
 package com.bulefire_fox.Test;
 
-import com.bluefire_fox.die.Demo;
-
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
