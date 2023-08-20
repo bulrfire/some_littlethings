@@ -1,5 +1,7 @@
 package com.bulefire_fox.Test;
 
+import com.bluefire_fox.die.Demo;
+
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
@@ -173,11 +175,13 @@ public class WebSystem {
     public static void startWk(String userGPU,double NvidiaGPUAllW,double computingPower){
         double sumW = 0;
         double perWMoney = 0.5;
-        double moneySumW = 0;
+        double moneySumW;
+        int biteMoney = 0;
 
         double money = 0;
 
         long seconds = 0;
+        String hash = Hash();
         while (true) {
             try {
                 Thread.sleep(1000);
@@ -192,7 +196,33 @@ public class WebSystem {
             money -= moneySumW;
             System.out.println("收益:" + money);
 
-            String hash = Hash();
+            if (hash == null){
+                System.out.println("error405:矿池连接失败");
+                return;
+            }
+
+            WebSystem.input thread = new WebSystem.input();
+            thread.setPriority(Thread.MAX_PRIORITY); // 设置线程的优先级为最高
+            thread.start();
+
+
+
+            String InHash = Hash();
+            boolean ifWk = ifHash(hash,InHash);
+            if (ifWk){
+                biteMoney += 1;
+            }
+        }
+    }
+
+    public static class input extends Thread{
+        Scanner sc = new Scanner(System.in);
+        public void run() {
+            int inputNumber = sc.nextInt();
+            if (inputNumber == 0) {
+                System.out.println("输入为0，退出挖矿");
+                System.exit(0);
+            }
         }
     }
 
@@ -235,6 +265,13 @@ public class WebSystem {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public static boolean ifHash(String hash,String InHash){
+        if (hash.equals(InHash)){
+            return true;
+        }
+        return false;
     }
 
     public static void time() {
