@@ -16,8 +16,8 @@ public class ZT {
         change_go c = new change_go();
         c.start();
         while (go){
-            System.out.println("bot" + ZT_is_bot);
-            System.out.println("people" + ZT_is_people);
+            System.out.println("bot    " + ZT_is_bot);
+            System.out.println("people " + ZT_is_people);
         }
     }
     private static volatile boolean go;
