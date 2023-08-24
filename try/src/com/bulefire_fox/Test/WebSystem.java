@@ -143,6 +143,7 @@ public class WebSystem {
                         break;
                     default:
                         System.out.println("error1:未知操作！");
+                        break;
                 }
                 //退出
                 return;
@@ -181,7 +182,9 @@ public class WebSystem {
                     break;
                 default:
                     System.out.println("error1:未知操作！");
+                    break;
             }
+            choose(null,user,money,number,Username,PassWorld, userLoginNumber,luckNumber,GPUNumber,userGPU,GPUUser);
         }
     }
     //挖矿主方法
@@ -230,6 +233,7 @@ public class WebSystem {
                             return;
                         default:
                             System.out.println("error1:未知操作！");
+                            break;
                     }
                     //意义不明的保险代码
                     return;
@@ -277,6 +281,7 @@ public class WebSystem {
                 return;
             default:
                 System.out.println("error1:未知操作！");
+                break;
         }
     }
     //购入GPU
@@ -346,6 +351,7 @@ public class WebSystem {
                         return;
                     default:
                         System.out.println("error1:未知操作！");
+                        break;
                 }
             }
             //寻找失败
@@ -593,6 +599,7 @@ public class WebSystem {
                     return false;
                 default:
                     System.out.println("error1:未知操作！");
+                    break;
             }
             return false;
         }
@@ -614,6 +621,7 @@ public class WebSystem {
                 return false;
             default:
                 System.out.println("error1:未知操作！");
+                break;
         }
         //退出并取消递归（意义不明的保险代码
         return false;
@@ -644,6 +652,7 @@ public class WebSystem {
                 moneyIn(name, money, inNumber);
             default:
                 System.out.println("error1:未知操作！");
+                break;
         }
     }
     //取钱
@@ -673,6 +682,7 @@ public class WebSystem {
                     return;
                 default:
                     System.out.println("error1:未知操作！");
+                    break;
             }
         }
         //否
@@ -697,6 +707,7 @@ public class WebSystem {
                 moneyOut(name, money, inNumber);
             default:
                 System.out.println("error1:未知操作！");
+                break;
         }
     }
     //幸运数字
