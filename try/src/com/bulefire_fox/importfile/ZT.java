@@ -3,11 +3,11 @@ package com.bulefire_fox.importfile;
 import java.util.Scanner;
 
 public class ZT {
-    public void main(String[] args) {
+    public static void main(String[] args) {
         What_ZT_is();
     }
 
-    public void What_ZT_is(){
+    public static void What_ZT_is(){
         go = true;
         ZT_is_bot a = new ZT_is_bot();
         a.start();
@@ -15,28 +15,32 @@ public class ZT {
         b.start();
         change_go c = new change_go();
         c.start();
-        while (go) {
-            System.out.println("people" + ZT_is_people);
+        while (go){
             System.out.println("bot" + ZT_is_bot);
+            System.out.println("people" + ZT_is_people);
         }
     }
-    private volatile boolean go;
-    private volatile int ZT_is_bot;
-    private volatile int ZT_is_people;
+    private static volatile boolean go;
+    private static volatile int ZT_is_bot;
+    private static volatile int ZT_is_people;
 
-    public class ZT_is_people extends Thread{
+    public static class ZT_is_people extends Thread{
         public void run() {
-            ZT_is_people++;
+            while (go) {
+                ZT_is_people++;
+            }
         }
     }
 
-    public class ZT_is_bot extends Thread{
+    public static class ZT_is_bot extends Thread{
         public void run() {
-            ZT_is_bot++;
+            while (go) {
+                ZT_is_bot++;
+            }
         }
     }
 
-    public class change_go extends Thread{
+    public static class change_go extends Thread{
         public void run() {
             Scanner sc = new Scanner(System.in);
             go = true;
