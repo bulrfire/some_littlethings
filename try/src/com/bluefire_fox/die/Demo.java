@@ -6,5 +6,7 @@ public class Demo {
         if (ZT.equals("people")){
             System.out.println("ZT is not a bot!!");
         }
+
+
     }
 }
