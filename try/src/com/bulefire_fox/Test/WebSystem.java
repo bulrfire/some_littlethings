@@ -36,7 +36,8 @@ public class WebSystem {
     }
 
     //登录
-    public static void login(String[] Username,String[] PassWorld,String[] user,double[] money, int number,int userLoginNumber,boolean[] luckyNumber, int[] GPUNumber,String[] userGPU,String[] GPUUser){
+    public static void login(String[] Username,String[] PassWorld,String[] user,double[] money,
+                             int number,int userLoginNumber,boolean[] luckyNumber, int[] GPUNumber,String[] userGPU,String[] GPUUser){
         Scanner sc = new Scanner(System.in);
         //获取用户名和密码
         System.out.println("用户名");
@@ -51,23 +52,42 @@ public class WebSystem {
                 if(passWorld.equals(PassWorld[i])){
                     //正确
                     System.out.println("欢迎 " + Username[i]);
+                    number = i;
                     //返回主方法（递归
                     choose(Username[i],user,money,number,Username,PassWorld,
                             userLoginNumber,luckyNumber,GPUNumber,userGPU,GPUUser);
                 }
                 //错误
                 else{
-                    System.out.println("密码或用户名错误");
+                    failToLongin(Username, PassWorld, user, money, number, userLoginNumber, luckyNumber, GPUNumber, userGPU, GPUUser, sc);
                 }
                 //退出
                 return;
             }
         }
         //寻找失败
-        System.out.println("密码或用户名错误");
+        failToLongin(Username, PassWorld, user, money, number, userLoginNumber, luckyNumber, GPUNumber, userGPU, GPUUser, sc);
+        return;
     }
+    //重登录或注册（IDEA自动提的
+    public static void failToLongin(String[] Username, String[] PassWorld, String[] user, double[] money, int number, int userLoginNumber, boolean[] luckyNumber, int[] GPUNumber, String[] userGPU, String[] GPUUser, Scanner sc) {
+        System.out.println("密码或用户名错误");
+        System.out.println("请重新[登录]或[注册]");
+        String choose = sc.next();
+        if (choose.equals("登录")){
+            System.out.println("正在重新登录");
+            login(Username, PassWorld, user, money, number,
+                    userLoginNumber,luckyNumber,GPUNumber,userGPU,GPUUser);
+        }else if (choose.equals("注册")){
+            System.out.println("正在前往注册");
+            login(Username, PassWorld, user, money, number,
+                    userLoginNumber, luckyNumber, GPUNumber, userGPU, GPUUser, 0);
+        }
+    }
+
     //注册
-    public static void login(String[] Username,String[] PassWorld,String[] user, double[] money,int number,int userLoginNumber,boolean[] luckNumber, int[] GPUNumber,String[] userGPU,String[] GPUUser,int a){
+    public static void login(String[] Username,String[] PassWorld,String[] user, double[] money,int number,
+                             int userLoginNumber,boolean[] luckNumber, int[] GPUNumber,String[] userGPU,String[] GPUUser,int a){
         Scanner sc = new Scanner(System.in);
         //获取用户名和密码
         System.out.println("用户名");
@@ -91,6 +111,7 @@ public class WebSystem {
         Username[userLoginNumber] = UserName;
         PassWorld[userLoginNumber] = passWorld;
         System.out.println("录入成功");
+        userLoginNumber++;
         System.out.println("请再次登录");
         //返回登录
         login(Username,PassWorld,user, money,number,userLoginNumber,luckNumber,GPUNumber,userGPU,GPUUser);
@@ -102,37 +123,52 @@ public class WebSystem {
         while (true) {
             //tips
             System.out.println("操作");
-            //获取操作
-            String choose = sc.next();
             //如果用户名为null及为登录，则只能注册和登录
             if (name == null){
+                System.out.println("你还没有[登录]，请登录\n或[注册]");
+                //获取操作
+                String choose = sc.next();
                 switch (choose) {
                     case "登录":
                         //登录
+                        System.out.println("{登录}");
                         login(Username, PassWorld, user, money, number,
                                 userLoginNumber, luckNumber, GPUNumber, userGPU, GPUUser);
                         break;
                     case "注册":
                         //注册
+                        System.out.println("{注册}");
                         login(Username, PassWorld, user, money, number,
                                 userLoginNumber, luckNumber, GPUNumber, userGPU, GPUUser, 0);
                         break;
+                    default:
+                        System.out.println("error1:未知操作！");
                 }
                 //退出
                 return;
             }
+            System.out.println("进入系统");
+            System.out.println("""
+                                你当前可以
+                                [退出登录]
+                                [查看钱包]
+                                [幸运数字]
+                                [日期]
+                                [挖矿](慎入，基本负收益)
+                                """);
+            //获取操作
+            String choose = sc.next();
             //过登录检测，进主系统
             switch (choose){
                 case "退出登录":
                     System.out.println("已退出登录");
-                    return;
+                    choose(null,user,money,number,Username,PassWorld, userLoginNumber,luckNumber,GPUNumber,userGPU,GPUUser);
+                    break;
                 case "查看钱包":
                     //获取回传的布尔值
                     boolean go = money(name,user,money,number);
                     //决定是否递归
-                    if (go){
-                        money(name,user,money,number);
-                    }
+                    if (go){money(name,user,money,number);}
                     break;
                 case "幸运数字":
                     luckyNumber();
@@ -143,6 +179,8 @@ public class WebSystem {
                 case "挖矿":
                     wk(GPUNumber,userGPU,number,name,GPUUser,money);
                     break;
+                default:
+                    System.out.println("error1:未知操作！");
             }
         }
     }
@@ -169,6 +207,7 @@ public class WebSystem {
         for (int i = 0; i < GPUUser.length; i++) {
             if (name.equals(GPUUser[i])){
                 //成功
+                System.out.println("欢迎进入挖矿系统");
                 System.out.println("用户" + GPUUser[i]);
                 //判断是否拥有显卡
                 if (userGPU[number] == null){
@@ -181,7 +220,7 @@ public class WebSystem {
                         case "y":
                             System.out.println("正在前往购买显卡");
                             //进分支买显卡
-                            GPUIn(NvidiaGPU,NvidiaGPUMoney,money[number],userGPU,number,GPUNumber);
+                            GPUIn(NvidiaGPU,NvidiaGPUMoney,money,userGPU,number,GPUNumber);
                             //递归
                             wk(GPUNumber,userGPU,number,name,GPUUser,money);
                             break;
@@ -189,6 +228,8 @@ public class WebSystem {
                             //退出
                             System.out.println("以取消购买");
                             return;
+                        default:
+                            System.out.println("error1:未知操作！");
                     }
                     //意义不明的保险代码
                     return;
@@ -234,10 +275,12 @@ public class WebSystem {
                 System.out.println("以取消创建");
                 //意义不明的保险代码
                 return;
+            default:
+                System.out.println("error1:未知操作！");
         }
     }
     //购入GPU
-    public static void GPUIn(String[] NvidiaGPU,double[] NvidiaGPUMoney, double money,String[] userGPU,int number,int[] GPUNumber) {
+    public static void GPUIn(String[] NvidiaGPU,double[] NvidiaGPUMoney, double[] money,String[] userGPU,int number,int[] GPUNumber) {
         System.out.println("目前正在出售的显卡有");
         //打印显卡列表
         for (int i = 0; i < NvidiaGPU.length; i++) {
@@ -260,11 +303,11 @@ public class WebSystem {
                     //是
                     case "y":
                         //判断总钱数是否少于显卡价格
-                        if (money < NvidiaGPUMoney[i]){
+                        if (money[number] < NvidiaGPUMoney[i]){
                             //是
                             //tips
                             System.out.println("你的钱不够购买改显卡");
-                            System.out.println("你当前的余额为" + money);
+                            System.out.println("你当前的余额为" + money[number]);
                             System.out.println("取消购买(y)或更换显卡型号(n)");
                             String chooseInGPU = sc.next();
                             //分支取消购买或换
@@ -278,14 +321,16 @@ public class WebSystem {
                                     //递归
                                     GPUIn(NvidiaGPU,NvidiaGPUMoney,money,userGPU,number,GPUNumber);
                                     break;
+                                default:
+                                    System.out.println("error1:未知操作！");
                             }
                         }
                         //总钱数大于显卡价格
                         else {
                             //tips
                             System.out.println("成功购买显卡: " + NvidiaGPU[i]);
-                            //扣钱（不知为什，这里money显示NvidiaGPUMoney[i]的值分配给"money"是从未使用过
-                            money -= NvidiaGPUMoney[i];
+                            //扣钱
+                            money[number] -= NvidiaGPUMoney[i];
                             //录入GPU
                             userGPU[number] = NvidiaGPU[i];
                             //GPU数量加一
@@ -299,11 +344,14 @@ public class WebSystem {
                         //退出
                         System.out.println("以退出购买");
                         return;
+                    default:
+                        System.out.println("error1:未知操作！");
                 }
             }
             //寻找失败
             else{
                 //退出（敷衍一下
+                System.out.println("error35:显卡型号错误，无法购买");
                 return;
             }
         }
@@ -346,6 +394,29 @@ public class WebSystem {
         long seconds = 0;
         //获取随机哈希值
         String hash = Hash();
+        System.out.println("进入矿场");
+        //意义不明的等待（模拟
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        System.out.println("加载内核......");
+        //意义不明的等待（模拟
+        try {
+            Thread.sleep(1500);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        System.out.println("加载内核成功！");
+        System.out.println("开始挖矿");
+        System.out.println("输入0退出挖矿");
+        //意义不明的等待（模拟
+        try {
+            Thread.sleep(500);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         //启动线程changeGo
         changeGo changeGo = new changeGo();
         changeGo.start();
@@ -359,7 +430,7 @@ public class WebSystem {
             //总时间+1秒
             seconds += 1;
             //打印挖矿时间
-            System.out.println("挖矿时间" + TimeConvert(seconds));
+            System.out.println("挖矿总时间" + TimeConvert(seconds));
             //总瓦数+0.01
             sumW += 0.01;
             //计算电费
@@ -462,6 +533,7 @@ public class WebSystem {
     public static void time() {
         Date d = new Date();
         //获取当前时间
+        System.out.println("当前时间是");
         System.out.println(d);
     }
     //钱包主方法
@@ -473,6 +545,7 @@ public class WebSystem {
         for (int i = 0; i < user.length; i++) {
             if(name.equals(user[i])){
                 //成功
+                System.out.println("欢迎进入钱包系统");
                 System.out.println("用户：" + name);
                 System.out.println("钱包剩余存款：" + money[i]);
                 //取消递归
@@ -483,7 +556,13 @@ public class WebSystem {
         //判断用户是否存在
         if (!down){
             //存在
-            System.out.println("操作");
+            System.out.println("""
+                               操作
+                               你当前可以
+                               [存钱]
+                               [取钱]
+                               [返回]
+                               """);
             String choose = sc.next();
             //进分支
             switch (choose){
@@ -512,6 +591,8 @@ public class WebSystem {
                 case "返回":
                     //退出并取消递归
                     return false;
+                default:
+                    System.out.println("error1:未知操作！");
             }
             return false;
         }
@@ -531,6 +612,8 @@ public class WebSystem {
                 System.out.println("以取消创建");
                 //退出并取消递归
                 return false;
+            default:
+                System.out.println("error1:未知操作！");
         }
         //退出并取消递归（意义不明的保险代码
         return false;
@@ -544,7 +627,12 @@ public class WebSystem {
         //总钱数加上存款金额
         money[inNumber] += inMoney;
         System.out.println(name + " 成功存入 " + inMoney);
-        System.out.println("操作");
+        System.out.println("""
+                        操作
+                        你当前可以
+                        [返回]
+                        [继续存钱]
+                        """);
         String choose = sc.next();
         //分支
         switch (choose){
@@ -554,6 +642,8 @@ public class WebSystem {
             case "继续存钱":
                 //递归
                 moneyIn(name, money, inNumber);
+            default:
+                System.out.println("error1:未知操作！");
         }
     }
     //取钱
@@ -566,6 +656,12 @@ public class WebSystem {
         if (outMoney > money[inNumber]){
             //是，提示
             System.out.println("余额不足");
+            System.out.println("当前余额" + money[inNumber] + "\n取出钱数" + outMoney);
+            System.out.println("""
+                                你当前可以
+                                [重新选择金额]
+                                [退出]
+                                """);
             String choose = sc.next();
             //分支
             switch (choose){
@@ -575,6 +671,8 @@ public class WebSystem {
                 case "退出":
                     //退出
                     return;
+                default:
+                    System.out.println("error1:未知操作！");
             }
         }
         //否
@@ -582,7 +680,12 @@ public class WebSystem {
         money[inNumber] -= outMoney;
         //tips
         System.out.println(name + " 成功取出 " + outMoney);
-        System.out.println("操作");
+        System.out.println("""
+                           操作
+                           你当前可以
+                           [返回]
+                           [继续取钱]
+                            """);
         String choose = sc.next();
         //分支
         switch (choose){
@@ -592,6 +695,8 @@ public class WebSystem {
             case "继续取钱":
                 //递归
                 moneyOut(name, money, inNumber);
+            default:
+                System.out.println("error1:未知操作！");
         }
     }
     //幸运数字
