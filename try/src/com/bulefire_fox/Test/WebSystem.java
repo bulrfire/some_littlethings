@@ -4,11 +4,45 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.Date;
+import java.util.InputMismatchException;
 import java.util.Random;
 import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 
 public class WebSystem {
+    /**
+     *md鬼知道这玩意我写了多久啊
+     * 不想写了啊
+     * 挖矿那块快把我搞崩溃了
+     * 什么哈希值
+     * 什么多线程
+     * 什么共享变量
+     * 什么捕获异常
+     * 啊啊啊啊啊啊啊啊啊啊啊啊啊
+     * GPU还没做完啊
+     * 全是抄AI的好叭
+     * 学了数据库马上就把main方法删了
+     * 什么静态数据库
+     * 一重启直接一夜回到解放前
+     * 为了这个我还去翻了好久的API文档
+     * 我就不应该做这个的
+     * 跟老师走多好啊
+     * md自己写直接原地爆炸
+     * 一个方法近十几个形参
+     * 又屎山的感觉了好叭
+     * 补注释又补了好久.....
+     * 下次一定写注释
+     * 一定，一定写注释
+     * 不然我自己的不知道在写什么（虽然写了也不知道
+     * 但丢给AI的时候可以帮助AI更好的理解我的代码
+     * 从而更好的抄..啊不，学习AI给出的示例代码
+     * 最近好多AI都用不了了...
+     * 还是万卷稳定
+     * 就是有时候容易抽风
+     * 但至少能用
+     * AI还都是从网站找到
+     * 我甚至还真的学习到了一些代码.....奇迹！
+     */
     //这个主方法只是充当数据库
     public static void main(String[] args) {
         //用户名
@@ -36,8 +70,7 @@ public class WebSystem {
     }
 
     //登录
-    public static void login(String[] Username,String[] PassWorld,String[] user,double[] money,
-                             int number,int userLoginNumber,boolean[] luckyNumber, int[] GPUNumber,String[] userGPU,String[] GPUUser){
+    public static void login(String[] Username,String[] PassWorld,String[] user,double[] money, int number,int userLoginNumber,boolean[] luckyNumber, int[] GPUNumber, String[] userGPU,String[] GPUUser){
         Scanner sc = new Scanner(System.in);
         //获取用户名和密码
         System.out.println("用户名");
@@ -125,7 +158,7 @@ public class WebSystem {
             System.out.println("操作");
             //如果用户名为null及为登录，则只能注册和登录
             if (name == null){
-                System.out.println("你还没有[登录]，请登录\n或[注册]");
+                System.out.println("你还没有登录，\n请[登录]或[注册]");
                 //获取操作
                 String choose = sc.next();
                 switch (choose) {
@@ -181,10 +214,11 @@ public class WebSystem {
                     wk(GPUNumber,userGPU,number,name,GPUUser,money);
                     break;
                 default:
+                    //异常处理
                     System.out.println("error1:未知操作！");
+                    //懒得写递归，反正他自己也会在跑一遍的
                     break;
             }
-            choose(null,user,money,number,Username,PassWorld, userLoginNumber,luckNumber,GPUNumber,userGPU,GPUUser);
         }
     }
     //挖矿主方法
@@ -327,7 +361,10 @@ public class WebSystem {
                                     GPUIn(NvidiaGPU,NvidiaGPUMoney,money,userGPU,number,GPUNumber);
                                     break;
                                 default:
+                                    //异常处理
                                     System.out.println("error1:未知操作！");
+                                    //递归
+                                    GPUIn(NvidiaGPU,NvidiaGPUMoney,money,userGPU,number,GPUNumber);
                             }
                         }
                         //总钱数大于显卡价格
@@ -350,7 +387,10 @@ public class WebSystem {
                         System.out.println("以退出购买");
                         return;
                     default:
+                        //异常处理
                         System.out.println("error1:未知操作！");
+                        //递归
+                        GPUIn(NvidiaGPU,NvidiaGPUMoney,money,userGPU,number,GPUNumber);
                         break;
                 }
             }
@@ -483,6 +523,7 @@ public class WebSystem {
     }
     //生成哈希值
     public static String Hash(){
+        //抄AI的
         try {
             // 创建 MessageDigest 对象，指定使用 SHA-256 算法
             MessageDigest digest = MessageDigest.getInstance("SHA-256");
@@ -598,7 +639,10 @@ public class WebSystem {
                     //退出并取消递归
                     return false;
                 default:
+                    //异常处理
                     System.out.println("error1:未知操作！");
+                    //递归
+                    money(name, user, money, number);
                     break;
             }
             return false;
@@ -631,7 +675,17 @@ public class WebSystem {
         Scanner sc = new Scanner(System.in);
         System.out.println("存入钱数：");
         //获取存取钱数
-        double inMoney = sc.nextDouble();
+        double inMoney = 0;
+        //捕获异常
+        try {
+            inMoney = sc.nextDouble();
+        } catch (InputMismatchException error) {
+            //报错
+            System.out.println("你输入的金额无效！");
+            System.out.println("请重新输入");
+            //递归
+            moneyIn(name, money, inNumber);
+        }
         //总钱数加上存款金额
         money[inNumber] += inMoney;
         System.out.println(name + " 成功存入 " + inMoney);
@@ -651,7 +705,10 @@ public class WebSystem {
                 //递归
                 moneyIn(name, money, inNumber);
             default:
+                //异常处理
                 System.out.println("error1:未知操作！");
+                //递归
+                moneyIn(name, money, inNumber);
                 break;
         }
     }
@@ -660,7 +717,17 @@ public class WebSystem {
         Scanner sc = new Scanner(System.in);
         System.out.println("取出钱数");
         //获取取出钱数
-        double outMoney = sc.nextDouble();
+        double outMoney = 0;
+        //捕获异常
+        try {
+            outMoney = sc.nextDouble();
+        } catch (InputMismatchException error) {
+            //报错
+            System.out.println("你输入的金额无效！");
+            System.out.println("请重新输入");
+            //递归
+            moneyOut(name, money, inNumber);
+        }
         //判断取钱金额是否超过总金额
         if (outMoney > money[inNumber]){
             //是，提示
@@ -681,7 +748,10 @@ public class WebSystem {
                     //退出
                     return;
                 default:
+                    //异常处理
                     System.out.println("error1:未知操作！");
+                    //递归
+                    moneyOut(name, money, inNumber);
                     break;
             }
         }
@@ -706,7 +776,10 @@ public class WebSystem {
                 //递归
                 moneyOut(name, money, inNumber);
             default:
+                //异常处理
                 System.out.println("error1:未知操作！");
+                //递归
+                moneyOut(name, money, inNumber);
                 break;
         }
     }
