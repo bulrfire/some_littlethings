@@ -36,9 +36,7 @@ public class WebSystem {
     }
 
     //登录
-    public static void login(String[] Username,String[] PassWorld,String[] user,double[] money,
-                             int number,int userLoginNumber,boolean[] luckyNumber,
-                             int[] GPUNumber,String[] userGPU,String[] GPUUser){
+    public static void login(String[] Username,String[] PassWorld,String[] user,double[] money, int number,int userLoginNumber,boolean[] luckyNumber, int[] GPUNumber,String[] userGPU,String[] GPUUser){
         Scanner sc = new Scanner(System.in);
         //获取用户名和密码
         System.out.println("用户名");
@@ -69,9 +67,7 @@ public class WebSystem {
         System.out.println("密码或用户名错误");
     }
     //注册
-    public static void login(String[] Username,String[] PassWorld,String[] user,
-                             double[] money,int number,int userLoginNumber,boolean[] luckNumber,
-                             int[] GPUNumber,String[] userGPU,String[] GPUUser,int a){
+    public static void login(String[] Username,String[] PassWorld,String[] user, double[] money,int number,int userLoginNumber,boolean[] luckNumber, int[] GPUNumber,String[] userGPU,String[] GPUUser,int a){
         Scanner sc = new Scanner(System.in);
         //获取用户名和密码
         System.out.println("用户名");
@@ -100,9 +96,7 @@ public class WebSystem {
         login(Username,PassWorld,user, money,number,userLoginNumber,luckNumber,GPUNumber,userGPU,GPUUser);
     }
     //这个才是真正的主方法
-    public static void choose(String name,String[] user,double[] money,int number,String[] Username,
-                              String[] PassWorld,int userLoginNumber,boolean[] luckNumber,
-                              int[] GPUNumber,String[] userGPU,String[] GPUUser){
+    public static void choose(String name,String[] user,double[] money,int number,String[] Username, String[] PassWorld,int userLoginNumber,boolean[] luckNumber, int[] GPUNumber,String[] userGPU,String[] GPUUser){
         Scanner sc = new Scanner(System.in);
         //进死循环
         while (true) {
@@ -207,6 +201,7 @@ public class WebSystem {
                     //是
                     //进分支开始挖矿
                     startWk(userGPU[number],NvidiaGPUAllW[a],NvidiaGPUComputingPower[a],money,number);
+                    return;
                 }
                 else if (sc.next().equals("n")){
                     //否
@@ -242,8 +237,7 @@ public class WebSystem {
         }
     }
     //购入GPU
-    public static void GPUIn(String[] NvidiaGPU,double[] NvidiaGPUMoney,
-                             double money,String[] userGPU,int number,int[] GPUNumber) {
+    public static void GPUIn(String[] NvidiaGPU,double[] NvidiaGPUMoney, double money,String[] userGPU,int number,int[] GPUNumber) {
         System.out.println("目前正在出售的显卡有");
         //打印显卡列表
         for (int i = 0; i < NvidiaGPU.length; i++) {
@@ -314,7 +308,24 @@ public class WebSystem {
             }
         }
     }
-
+    //定义共享变量
+    private static volatile boolean go = true;
+    //定义新的线程获取用户输入用于修改go为false
+    public static class  changeGo extends Thread {
+        public void run() {
+            Scanner sc = new Scanner(System.in);
+            //由go控制的死循环
+            while (go) {
+                //获取输入
+                int choose = sc.nextInt();
+                //判断是否退出
+                if (choose == 0){
+                    //修改go
+                    go = false;
+                }
+            }
+        }
+    }
     //开始挖矿
     public static void startWk(String userGPU, double NvidiaGPUAllW, double computingPower,double[] money,int number) {
         //初始化总瓦数
@@ -335,8 +346,11 @@ public class WebSystem {
         long seconds = 0;
         //获取随机哈希值
         String hash = Hash();
-        //死循环
-        while (true) {
+        //启动线程changeGo
+        changeGo changeGo = new changeGo();
+        changeGo.start();
+        //死循环,使用共享变量go判断是否执行循环
+        while (go) {
             //等待一秒
             try {
                 Thread.sleep(1000);
@@ -386,6 +400,9 @@ public class WebSystem {
             //计算总钱数
             money[number] += InMoney;
         }
+        System.out.println("以结束挖矿");
+        //初始化go
+        go = true;
     }
     //生成哈希值
     public static String Hash(){
