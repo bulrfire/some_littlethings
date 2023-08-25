@@ -2,7 +2,6 @@ package com.bulefire_fox.Test;
 
 import java.util.InputMismatchException;
 import java.util.Scanner;
-import com.bulefire_fox.Test.WebSystem;
 
 public class Money {
     //钱包主方法
