@@ -48,7 +48,7 @@ public class MultithreadingRandom {
             start();
             //等待子线程执行
             try {
-                Thread.sleep(100);
+                Thread.sleep(1);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -56,6 +56,7 @@ public class MultithreadingRandom {
             go = false;
             //记录数值
             number[i] = a;
+            System.out.println("tmp:" + a);
             //初始化主变量a
             a = 0;
         }
