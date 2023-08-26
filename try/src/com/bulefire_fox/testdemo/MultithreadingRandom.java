@@ -42,7 +42,7 @@ public class MultithreadingRandom {
         int[] number = new int[times];
         //循环
         for (int i = 0;i < times;i++) {
-            //更矮标识符为true
+            //更改标识符为true
             go = true;
             //
             start();
