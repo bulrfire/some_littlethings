@@ -2,7 +2,7 @@ package com.bulefire_fox.testdemo;
 
 import java.util.Scanner;
 
-public class MultithreadingRandom {
+public class RealRandom {
     /**
      * 核心原理：
      * 利用CPU线程调度的不确定性充当随机数
@@ -18,11 +18,11 @@ public class MultithreadingRandom {
      * 执行流程和原理：
      * 利用比大小来生成随机数
      * 通过同时创建两个线程使得他们互相干扰
-     * 再让主线程每次将主随机变量+1
-     * 通过tmp线程对ZT线程的干扰和抢占资源
+     * 再让主线程每次将主随机变量main_random_variable + 1
+     * 通过Interfering_thread线程对main_thread线程的干扰和抢占资源
      * 这样每次返回的a值就是一个再一定范围内随机的值
      * 具体范围和执行时间有关
-     * 将返回的多个a值存储再number数组中
+     * 将返回的多个main_random_variable值存储再number数组中
      * 找出最大值
      * 然后返回最大值的索引
      * 及生成了随机数
@@ -30,76 +30,83 @@ public class MultithreadingRandom {
     //定义循环标识
     static volatile boolean go = true;
     //主随机变量
-    static volatile int a = 0;
+    static volatile int main_random_variable = 0;
     //副随机变量
-    static volatile int b = 0;
+    static volatile int disturbing_random_variables = 0;
+    public static int nextInt(int number){
+        return nextInt(number,0);
+    }
+
     //主方法
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        //获取随机数范围
-        int times = sc.nextInt();
+    public static int nextInt(int min,int max) {
         //创建动态数组
-        int[] number = new int[times];
+        int[] number = new int[min];
         //循环
-        for (int i = 0;i < times;i++) {
+        for (int i = 0;i < min;i++) {
             //更改标识符为true
             go = true;
-            //
             start();
             //等待子线程执行
             try {
-                Thread.sleep(1);
+                Thread.sleep(5);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
             //结束子线程执行
             go = false;
             //记录数值
-            number[i] = a;
-            System.out.println("tmp:" + a);
+            number[i] = main_random_variable;
+            //System.out.println("tmp:" + a);
             //初始化主变量a
-            a = 0;
+            main_random_variable = 0;
         }
-        findMax(number);
+        if (max == 0){
+            return findMax(number);
+        }
+        else if (max != 0) {
+            return (findMax(number) + min);
+        }
+        return 0;
     }
     //找最大值(生成随机数
-    public static void findMax(int[] number){
+    public static int findMax(int[] number){
         int max = number[0];//最大
 
         //遍历找数据
-        for (int i = 0; i < number.length; i++) {
+        for (int j : number) {
             //最大
-            if (number[i] > max){
-                max = number[i];
+            if (j > max) {
+                max = j;
             }
         }
         //寻找i值输出为随机数
         for (int i = 0; i < number.length; i++) {
             if (max == number[i]){
-                System.out.println(i);
+                return i;
             }
         }
+        return 0;
     }
     //启动线程
     public static void start(){
-        ZT zt = new ZT();
-        tmp t = new tmp();
-        zt.start();
+        main_thread m = new main_thread();
+        Interfering_thread t = new Interfering_thread();
+        m.start();
         t.start();
     }
     //主随机数线程
-    public static class ZT extends Thread{
+    public static class main_thread extends Thread{
         public void run() {
             while(go){
-                a++;
+                main_random_variable++;
             }
         }
     }
     //干扰主随机数线程的线程
-    public static class tmp extends Thread{
+    public static class Interfering_thread extends Thread{
         public void run(){
             while(go){
-                b++;
+                disturbing_random_variables++;
             }
         }
     }
