@@ -83,7 +83,7 @@ public class MultithreadingRandom {
     public static void start(){
         ZT zt = new ZT();
         tmp t = new tmp();
-        zt.start();12
+        zt.start();
         t.start();
     }
     //主随机数线程
