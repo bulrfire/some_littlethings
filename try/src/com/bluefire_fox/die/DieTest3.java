@@ -5,6 +5,10 @@ import java.util.Scanner;
 
 public class DieTest3 {
     public static void main(String[] args) {
+    Die_main();
+    }
+
+    public static void Die_main(){
         //提示用户使用方法
         System.out.println("""
                 请输入需要的色子次数
