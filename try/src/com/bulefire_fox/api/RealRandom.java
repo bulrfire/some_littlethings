@@ -1,4 +1,4 @@
-package com.bulefire_fox.testdemo;
+package com.bulefire_fox.api;
 
 import java.util.Scanner;
 
