@@ -1,7 +1,5 @@
 package com.bulefire_fox.api;
 
-import java.util.Scanner;
-
 public class RealRandom {
     /**
      * 核心原理：
@@ -33,22 +31,25 @@ public class RealRandom {
     static volatile int main_random_variable = 0;
     //副随机变量
     static volatile int disturbing_random_variables = 0;
+    //一个入口
     public static int nextInt(int number){
-        return nextInt(number,0);
+        return nextInt(0,number);
     }
 
     //主方法
     public static int nextInt(int min,int max) {
+        //定义数量
+        int random_number = max - min;
         //创建动态数组
-        int[] number = new int[min];
+        int[] number = new int[random_number];
         //循环
-        for (int i = 0;i < min;i++) {
+        for (int i = 0;i < random_number;i++) {
             //更改标识符为true
             go = true;
             start();
             //等待子线程执行
             try {
-                Thread.sleep(5);
+                Thread.sleep(15);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -60,13 +61,10 @@ public class RealRandom {
             //初始化主变量a
             main_random_variable = 0;
         }
-        if (max == 0){
-            return findMax(number);
-        }
-        else if (max != 0) {
-            return (findMax(number) + min);
-        }
-        return 0;
+        //找最大
+        int max_number = findMax(number);
+
+        return max_number + min;
     }
     //找最大值(生成随机数
     public static int findMax(int[] number){
