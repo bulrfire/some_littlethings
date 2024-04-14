@@ -1,12 +1,11 @@
 package com.bulefire_fox.testdemo;
 
-import com.bulefire_fox.api.RealRandom;
+import com.bulefire_fox.api.draw;
 
 public class tmp {
     public static void main(String[] args) {
-        RealRandom rr = new RealRandom();
-        for (int i = 0; i < 50; i++) {
-            System.out.println(rr.nextInt(10,30));
-        }
+        float a;
+        a = 1f/4f;
+        System.out.println(a);
     }
 }
