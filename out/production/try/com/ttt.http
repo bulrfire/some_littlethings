@@ -1,0 +1,8 @@
+POST https://bots.qq.com/v2/groups/819361324/messages
+Content-Type: application/json
+Authorization: Bot 102412638.V0voTf7BfUL48z7_YIdEyXvV5fLKdX4O7GaLiIyiBCPE3Iw0hHvInebrfAuxqxP2BD0hfkijOccR
+
+{
+  "content": "123456",
+  "msg_type": 0
+}

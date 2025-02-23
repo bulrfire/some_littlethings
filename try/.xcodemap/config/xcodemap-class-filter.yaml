@@ -1,0 +1,25 @@
+autoDetectedPackages:
+- com.bluefire_fox.die
+- com.bulefire_fox.Test
+- com.bulefire_fox.api
+- com.bulefire_fox.importfile
+- com.bulefire_fox.needpassworld
+- com.bulefire_fox.testdemo
+- com.problem.week01
+- com.problem.week02
+- com.problem.week03
+enableAutoDetect: true
+funcDisplayConfig:
+  skipConstructors: false
+  skipFieldAccess: true
+  skipFieldChange: true
+  skipGetters: true
+  skipPrivateMethods: false
+  skipSetters: true
+ignoreSameClassCall: null
+ignoreSamePackageCall: null
+includedPackagePrefixes: null
+includedParentClasses: null
+name: xcodemap-filter
+recordMode: smart
+startOnDebug: false
